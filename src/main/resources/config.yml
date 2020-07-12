@@ -1,0 +1,16 @@
+worlds:
+  - cr
+  - cr_nether
+  - cr_the_end
+  - su
+  - su_nether
+  - su_the_end
+  - fs
+  - ir
+save:
+  - cr
+  - cr_nether
+  - cr_the_end
+  - su
+  - su_nether
+  - su_the_end

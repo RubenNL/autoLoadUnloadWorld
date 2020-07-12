@@ -1,0 +1,4 @@
+name: AutoLoadUnloadWorld
+version: ${project.version}
+main: nl.rubend.autoloadunloadworld.AutoLoadUnloadWorld
+api-version: 1.15
