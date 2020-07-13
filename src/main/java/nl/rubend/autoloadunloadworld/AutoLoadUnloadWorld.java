@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -18,11 +19,18 @@ public final class AutoLoadUnloadWorld extends JavaPlugin implements Listener {
         config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
         Bukkit.getPluginManager().registerEvents(this, this);
     }
-    @EventHandler private void onChangedWorld(PlayerChangedWorldEvent event) {
-        World world=event.getFrom();
+    private void unloadWorld(World world) {
         String name=world.getName();
         if(world.getPlayers().size()>0) return;
         if(!Objects.requireNonNull(config.getList("worlds")).contains(name)) return;
         Bukkit.unloadWorld(name, Objects.requireNonNull(config.getList("save")).contains(name));
+    }
+    @EventHandler private void onChangedWorld(PlayerChangedWorldEvent event) {
+        unloadWorld(event.getFrom());
+
+    }
+    @EventHandler private void onLogout(PlayerQuitEvent event) {
+        World world=event.getPlayer().getLocation().getWorld();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> unloadWorld(world), 0L);
     }
 }
