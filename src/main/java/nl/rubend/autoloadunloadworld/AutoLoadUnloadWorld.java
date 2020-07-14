@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Objects;
 
+import static org.bukkit.event.EventPriority.MONITOR;
+
 public final class AutoLoadUnloadWorld extends JavaPlugin implements Listener {
     private YamlConfiguration config;
     @Override public void onEnable() {
@@ -25,7 +27,7 @@ public final class AutoLoadUnloadWorld extends JavaPlugin implements Listener {
         if(!Objects.requireNonNull(config.getList("worlds")).contains(name)) return;
         Bukkit.unloadWorld(name, Objects.requireNonNull(config.getList("save")).contains(name));
     }
-    @EventHandler private void onChangedWorld(PlayerChangedWorldEvent event) {
+    @EventHandler(priority=MONITOR) private void onChangedWorld(PlayerChangedWorldEvent event) {
         unloadWorld(event.getFrom());
 
     }
